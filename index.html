@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For My Beloved ❤️</title>
+
+    <!-- Import Tailwind CSS (ใช้ CDN เพื่อความสะดวก) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Import Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mali:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- เชื่อมต่อไฟล์ CSS ของเรา -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Config Tailwind Theme -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "soft-pink": "#FFC0CB",
+              "hot-pink": "#FF69B4",
+              "pastel-pink": "#FFF0F5",
+            },
+            fontFamily: {
+              mali: ["Mali", "cursive"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="text-gray-600 relative overflow-x-hidden">
+    <!-- Background Hearts -->
+    <div class="heart-bg" id="heart-container"></div>
+
+    <!-- Container หลัก -->
+    <div
+      class="w-full sm:max-w-md mx-auto bg-white/80 backdrop-blur-sm min-h-screen shadow-2xl sm:border-x-4 border-soft-pink relative pb-10"
+    >
+      <!-- 1. HERO SECTION -->
+      <section
+        class="min-h-screen flex flex-col justify-center items-center text-center p-6 relative overflow-hidden"
+      >
+        <div
+          class="absolute top-10 right-10 text-soft-pink opacity-50 text-6xl animate-pulse"
+        >
+          <i class="fas fa-heart"></i>
+        </div>
+        <div
+          class="absolute bottom-20 left-10 text-soft-pink opacity-50 text-4xl animate-pulse"
+          style="animation-delay: 0.5s"
+        >
+          <i class="fas fa-heart"></i>
+        </div>
+
+        <!-- Profile Image -->
+        <div
+          class="relative w-40 h-40 sm:w-48 sm:h-48 mb-6 group cursor-pointer animate-float"
+          onclick="toggleMusic()"
+        >
+          <div
+            class="absolute inset-0 bg-hot-pink rounded-full opacity-20 group-hover:scale-110 transition-transform duration-500"
+          ></div>
+          <div
+            class="w-full h-full rounded-full border-4 border-white shadow-lg overflow-hidden relative z-10"
+          >
+            <img
+              src="https://api.dicebear.com/9.x/avataaars/svg?seed=Love&backgroundColor=ffdfbf"
+              alt="Couple"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div
+            class="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow text-hot-pink z-20 text-xs"
+          >
+            <i class="fas fa-music" id="music-icon"></i>
+          </div>
+        </div>
+
+        <h1
+          class="text-3xl sm:text-4xl font-bold text-hot-pink mb-2 drop-shadow-sm reveal"
+        >
+          For My Boo <span class="text-red-500">♥</span>
+        </h1>
+        <p
+          class="text-base sm:text-lg text-gray-500 mb-8 px-4 reveal"
+          style="transition-delay: 0.2s"
+        >
+          ความบังเอิญทำให้เราเจอกัน<br />แต่ความตั้งใจทำให้เรารักกันนะ
+        </p>
+
+        <div class="animate-bounce text-hot-pink mt-10">
+          <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+      </section>
+
+      <!-- 2. RELATIONSHIP TIMER -->
+      <section
+        class="py-8 px-4 sm:px-6 bg-gradient-to-b from-white to-pastel-pink rounded-t-3xl -mt-10 z-10 relative reveal"
+      >
+        <h2
+          class="text-xl sm:text-2xl font-bold text-center text-hot-pink mb-6"
+        >
+          <i class="fas fa-hourglass-half mr-2"></i>เวลาของเรา
+        </h2>
+
+        <div
+          class="grid grid-cols-4 gap-2 text-center bg-white p-4 rounded-2xl shadow-sm border-2 border-pink-100"
+        >
+          <div class="p-2">
+            <span id="days" class="block text-2xl font-bold text-gray-700"
+              >0</span
+            ><span class="text-xs text-pink-400">Days</span>
+          </div>
+          <div class="p-2 border-l border-pink-100">
+            <span id="hours" class="block text-2xl font-bold text-gray-700"
+              >0</span
+            ><span class="text-xs text-pink-400">Hours</span>
+          </div>
+          <div class="p-2 border-l border-pink-100">
+            <span id="minutes" class="block text-2xl font-bold text-gray-700"
+              >0</span
+            ><span class="text-xs text-pink-400">Mins</span>
+          </div>
+          <div class="p-2 border-l border-pink-100">
+            <span
+              id="seconds"
+              class="block text-2xl font-bold text-hot-pink animate-pulse"
+              >0</span
+            ><span class="text-xs text-pink-400">Secs</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. MEMORY LANE -->
+      <section class="py-8 px-4 reveal">
+        <h2
+          class="text-xl sm:text-2xl font-bold text-center text-hot-pink mb-8"
+        >
+          <i class="fas fa-camera mr-2"></i>ความทรงจำ
+        </h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="polaroid rotate-2">
+            <div class="bg-gray-200 h-32 rounded overflow-hidden mb-2">
+              <img
+                src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <p class="text-center text-xs font-bold text-gray-500">เดทแรก</p>
+          </div>
+          <div class="polaroid -rotate-2 mt-6">
+            <div class="bg-gray-200 h-32 rounded overflow-hidden mb-2">
+              <img
+                src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=400&auto=format&fit=crop"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <p class="text-center text-xs font-bold text-gray-500">ทะเลหวาน</p>
+          </div>
+          <div class="polaroid rotate-1">
+            <div class="bg-gray-200 h-32 rounded overflow-hidden mb-2">
+              <img
+                src="https://images.unsplash.com/photo-1516961642265-531546e84af2?q=80&w=400&auto=format&fit=crop"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <p class="text-center text-xs font-bold text-gray-500">กินเก่ง</p>
+          </div>
+          <div class="polaroid -rotate-3 mt-6">
+            <div class="bg-gray-200 h-32 rounded overflow-hidden mb-2">
+              <img
+                src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=400&auto=format&fit=crop"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <p class="text-center text-xs font-bold text-gray-500">รักที่สุด</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. LETTER -->
+      <section class="py-8 px-6 bg-pink-50 reveal">
+        <div
+          class="bg-white p-6 rounded-xl shadow-md border border-pink-100 relative"
+        >
+          <div
+            class="absolute -top-3 -left-3 text-hot-pink text-3xl transform -rotate-12"
+          >
+            <i class="fas fa-envelope-open-text"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-700 mb-4 text-center">
+            ถึง ที่รักของเค้า...
+          </h3>
+          <div class="text-sm leading-loose text-gray-600 min-h-[100px]">
+            <span id="typing-text"></span><span class="cursor">&nbsp;</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. BUTTON -->
+      <section class="py-12 pb-24 text-center reveal">
+        <button
+          onclick="showSurprise()"
+          class="bg-hot-pink text-white text-lg px-8 py-3 rounded-full shadow-lg hover:bg-pink-500 hover:scale-105 transition transform duration-300 animate-bounce"
+        >
+          <i class="fas fa-gift mr-2"></i> กดตรงนี้สิ
+        </button>
+      </section>
+
+      <footer
+        class="text-center py-4 text-xs text-pink-300 absolute bottom-0 w-full"
+      >
+        Made with <i class="fas fa-heart text-red-400"></i> for You
+      </footer>
+
+      <!-- MODAL -->
+      <div
+        id="surpriseModal"
+        class="fixed inset-0 bg-black/60 z-[9999] hidden flex justify-center items-center p-4 backdrop-blur-sm"
+      >
+        <div
+          class="bg-white rounded-2xl p-8 max-w-sm w-full text-center transform scale-0 transition-transform duration-300 shadow-2xl border-4 border-pink-100"
+          id="modalContent"
+        >
+          <div class="text-6xl mb-4 animate-bounce">💖</div>
+          <h3 class="text-2xl font-bold text-hot-pink mb-2">รักนะต้าวอ้วน!</h3>
+          <p class="text-gray-600 mb-6">
+            ขอบคุณที่เป็นรอยยิ้มให้กันในทุกๆ วันนะ<br />อยู่ด้วยกันไปนานๆ นะครับ
+          </p>
+          <button
+            onclick="closeSurprise()"
+            class="bg-gray-100 text-gray-600 px-6 py-2 rounded-full hover:bg-hot-pink hover:text-white transition text-sm"
+          >
+            เขินจัง ปิดละ
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- เชื่อมต่อไฟล์ Script ของเรา -->
+    <script src="script.js"></script>
+  </body>
+</html>
