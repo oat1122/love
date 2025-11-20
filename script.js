@@ -247,3 +247,123 @@ function closeLightbox() {
     lightbox.classList.add("hidden");
   }, 300);
 }
+
+// --- 8. LOVE CHECK GAME (ปุ่มหนี) ---
+let noBtnClickCount = 0; // นับจำนวนครั้งที่พยายามกดปุ่ม "เฉยๆ"
+const maxNoClicks = 2; // จำนวนครั้งที่ยอมให้กดก่อนปุ่มหายไป (ครั้งที่ 3 จะหาย)
+let isRunAwayCooldown = false; // เช็คว่าปุ่มกำลังหดอยู่หรือเปล่า (ป้องกันการทำงานรัว)
+
+function runAway() {
+  // ถ้ากำลังคูลดาวน์อยู่ ให้จบการทำงานทันที
+  if (isRunAwayCooldown) return;
+
+  const noBtn = document.getElementById("no-btn");
+  const loveBtn = document.getElementById("love-btn");
+
+  if (!noBtn) return; // ป้องกัน error ถ้าปุ่มหายไปแล้ว
+
+  // เริ่มทำงาน: ล็อกไม่ให้ทำซ้ำรัวๆ
+  isRunAwayCooldown = true;
+
+  noBtnClickCount++;
+
+  if (noBtnClickCount <= maxNoClicks) {
+    // ลดขนาดปุ่ม "เฉยๆ"
+    const currentNoBtnWidth = noBtn.offsetWidth;
+    const newNoBtnWidth = Math.max(currentNoBtnWidth * 0.7, 20); // ลดเหลือ 70% แต่ไม่ให้เล็กกว่า 20px
+    noBtn.style.width = `${newNoBtnWidth}px`;
+    noBtn.style.paddingLeft = "0px";
+    noBtn.style.paddingRight = "0px";
+    noBtn.style.fontSize = `${1 - noBtnClickCount * 0.3}rem`; // ลดขนาดฟอนต์
+
+    // เพิ่มขนาดปุ่ม "รักที่สุด!"
+    const currentLoveBtnScale =
+      parseFloat(
+        loveBtn.style.transform.replace("scale(", "").replace(")", "")
+      ) || 1;
+    loveBtn.style.transform = `scale(${currentLoveBtnScale * 1.2})`; // เพิ่มขนาด 20%
+    loveBtn.style.fontSize = `${1.2 + noBtnClickCount * 0.2}rem`; // เพิ่มขนาดฟอนต์
+
+    // เปลี่ยนข้อความเล็กน้อย (ถ้าต้องการ)
+    if (noBtnClickCount === 1) {
+      noBtn.innerText = "ม่ายยย";
+    } else if (noBtnClickCount === 2) {
+      noBtn.innerText = "จิ๋ววว";
+    }
+
+    // ปลดล็อก Cooldown หลังจาก Animation เสร็จ (300ms ตรงกับ duration-300 ใน CSS)
+    setTimeout(() => {
+      isRunAwayCooldown = false;
+    }, 300);
+  } else {
+    // ครั้งที่ 3 ปุ่ม "เฉยๆ" หายไปเลย
+    noBtn.style.opacity = "0";
+    noBtn.style.transform = "scale(0)";
+    setTimeout(() => {
+      if (noBtn) noBtn.remove(); // ลบปุ่มออกจาก DOM จริงๆ
+    }, 300); // รอให้ animation หายไปก่อน
+
+    // เพิ่มขนาดปุ่มรักให้ใหญ่ขึ้นอีก
+    loveBtn.style.transform = "scale(1.8)";
+    loveBtn.style.fontSize = "2rem";
+
+    // ไม่ต้องปลดล็อก isRunAwayCooldown แล้ว เพราะปุ่มหายไปแล้ว
+  }
+}
+
+function sayLove() {
+  const loveModal = document.getElementById("loveModal");
+  const loveModalContent = document.getElementById("loveModalContent");
+
+  // ยิงพลุฉลอง
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: ["#ff0000", "#ff69b4", "#ffff00"], // เพิ่มสีเหลืองให้ดูมีมิติ
+  });
+
+  loveModal.classList.remove("hidden");
+  setTimeout(() => {
+    loveModal.classList.add("opacity-100");
+    loveModalContent.classList.remove("scale-0");
+    loveModalContent.classList.add("scale-100");
+  }, 10);
+}
+
+function closeLoveModal() {
+  const loveModal = document.getElementById("loveModal");
+  const loveModalContent = document.getElementById("loveModalContent");
+
+  loveModalContent.classList.remove("scale-100");
+  loveModalContent.classList.add("scale-0");
+  loveModal.classList.remove("opacity-100");
+
+  setTimeout(() => {
+    loveModal.classList.add("hidden");
+  }, 300); // ให้เวลา animation ปิด
+}
+
+// --- 9. RANDOM SWEET MESSAGE ---
+const sweetMessages = [
+  "เก่งมากแล้วคนเก่ง ✌️",
+  "ยิ้มเยอะๆ นะ โลกสดใสเพราะเธอเลย 🌍",
+  "เหนื่อยก็พักนะ เค้าอยู่ตรงนี้เสมอ 💖",
+  "คิดถึงจังเลยยยยย (ตะโกน)",
+  "กินข้าวยัง? เป็นห่วงนะ 🍚",
+  "สู้ๆ นะครับคนดี ฮึบๆ 💪",
+  "วันนี้เธอน่ารักที่สุดในโลกเลย!",
+];
+
+function randomMessage() {
+  const toast = document.getElementById("sweet-toast");
+  const randomIndex = Math.floor(Math.random() * sweetMessages.length);
+
+  toast.innerText = sweetMessages[randomIndex];
+  toast.classList.remove("hidden");
+
+  // สั่งให้เด้งดึ๋งๆ
+  toast.classList.remove("animate-bounce");
+  void toast.offsetWidth; // trigger reflow
+  toast.classList.add("animate-bounce");
+}
