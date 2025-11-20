@@ -107,15 +107,21 @@ audio.volume = 0.5;
 // Toggle Music Play/Pause
 function toggleMusic() {
   const icon = document.getElementById("music-icon");
+  const cover = document.getElementById("music-cover");
 
   if (audio.paused) {
     audio.play();
     icon.classList.remove("fa-music");
     icon.classList.add("fa-pause");
+    // Add spinning animation
+    cover.classList.add("rotate-center");
+    cover.classList.remove("paused-animation");
   } else {
     audio.pause();
     icon.classList.add("fa-music");
     icon.classList.remove("fa-pause");
+    // Pause spinning
+    cover.classList.add("paused-animation");
   }
 }
 
@@ -165,6 +171,31 @@ function showSurprise() {
   const modal = document.getElementById("surpriseModal");
   const content = document.getElementById("modalContent");
 
+  // --- Confetti Effect ---
+  var duration = 3 * 1000;
+  var end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 3,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors: ["#ff69b4", "#ffc0cb", "#fff"],
+    });
+    confetti({
+      particleCount: 3,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors: ["#ff69b4", "#ffc0cb", "#fff"],
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  })();
+
   // 1. เปิด Modal ทันที
   modal.classList.remove("hidden");
 
@@ -187,5 +218,32 @@ function closeSurprise() {
   content.classList.add("scale-0");
   setTimeout(() => {
     modal.classList.add("hidden");
+  }, 300);
+}
+
+// --- 7. LIGHTBOX (กดดูรูปใหญ่) ---
+function openLightbox(src) {
+  const lightbox = document.getElementById("lightbox");
+  const img = document.getElementById("lightbox-img");
+
+  lightbox.classList.remove("hidden");
+  img.src = src;
+
+  // Animation effect
+  setTimeout(() => {
+    img.classList.remove("scale-90");
+    img.classList.add("scale-100");
+  }, 10);
+}
+
+function closeLightbox() {
+  const lightbox = document.getElementById("lightbox");
+  const img = document.getElementById("lightbox-img");
+
+  img.classList.remove("scale-100");
+  img.classList.add("scale-90");
+
+  setTimeout(() => {
+    lightbox.classList.add("hidden");
   }, 300);
 }
