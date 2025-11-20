@@ -93,8 +93,38 @@
           </div>
         </div>
 
+        <!-- Volume Control -->
+        <div class="mt-8 w-72 max-w-full px-4">
+          <div
+            class="bg-white/90 backdrop-blur-sm rounded-2xl p-5 shadow-lg border-2 border-pink-100"
+          >
+            <div class="flex items-center gap-4">
+              <button
+                onclick="toggleMute()"
+                class="text-hot-pink hover:scale-110 transition-transform text-xl flex-shrink-0"
+              >
+                <i class="fas fa-volume-up" id="volume-icon"></i>
+              </button>
+              <input
+                type="range"
+                id="volume-slider"
+                min="0"
+                max="100"
+                value="50"
+                class="flex-1 h-2 bg-pink-200 rounded-lg appearance-none cursor-pointer"
+                style="accent-color: #ff69b4"
+              />
+              <span
+                id="volume-percent"
+                class="text-sm text-gray-600 font-bold w-12 text-right flex-shrink-0"
+                >50%</span
+              >
+            </div>
+          </div>
+        </div>
+
         <h1
-          class="text-3xl sm:text-4xl font-bold text-hot-pink mb-2 drop-shadow-sm reveal"
+          class="text-3xl sm:text-4xl font-bold text-hot-pink mb-2 drop-shadow-sm reveal mt-10"
         >
           For My Boo <span class="text-red-500">♥</span>
         </h1>
@@ -253,6 +283,12 @@
         </div>
       </div>
     </div>
+
+    <!-- Audio Element -->
+    <audio id="bgMusic" loop>
+      <source src="Wake Up Please.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
 
     <!-- เชื่อมต่อไฟล์ Script ของเรา -->
     <script src="script.js"></script>
