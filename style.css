@@ -35,6 +35,7 @@ body {
   display: inline-block;
   border-radius: 50%;
   animation: floatUp linear infinite;
+  will-change: transform, opacity;
 }
 
 @keyframes floatUp {
@@ -89,11 +90,16 @@ body {
 /* --- Pet Animations --- */
 .pet-jump {
   animation: petJump 0.5s ease-in-out;
+  will-change: transform;
 }
 
 @keyframes petJump {
   0%, 100% { transform: translateY(0) scale(1); }
   50% { transform: translateY(-20px) scale(1.1); }
+}
+
+#pet-eyes {
+  will-change: transform;
 }
 
 /* --- Click Particle --- */
@@ -103,6 +109,7 @@ body {
   animation: particleFade 1s ease-out forwards;
   z-index: 9999;
   font-size: 1.5rem;
+  will-change: transform, opacity;
 }
 
 @keyframes particleFade {

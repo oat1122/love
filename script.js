@@ -78,7 +78,11 @@ function createHeart() {
     heart.remove();
   }, 10000);
 }
-setInterval(createHeart, 800);
+
+// Optimize Heart Frequency for Mobile
+const isMobile = window.innerWidth < 768;
+const heartInterval = isMobile ? 2000 : 800;
+setInterval(createHeart, heartInterval);
 
 function toggleEmojiMode() {
   currentModeIndex = (currentModeIndex + 1) % emojiModes.length;
@@ -123,9 +127,10 @@ function randomMessage() {
   toast.classList.add("animate-bounce");
   
   // Confetti effect
+  const isMobile = window.innerWidth < 768;
   confetti({
-    particleCount: 50,
-    spread: 60,
+    particleCount: isMobile ? 30 : 50,
+    spread: isMobile ? 40 : 60,
     origin: { y: 0.6 },
     colors: ['#FFC0CB', '#FF69B4', '#FFB6C1']
   });
@@ -347,18 +352,27 @@ const petEyes = document.getElementById("pet-eyes");
 const petSpeech = document.getElementById("pet-speech");
 
 // Eye Tracking
+// Eye Tracking (Throttled)
+let eyeFrameId = null;
+
 document.addEventListener("mousemove", (e) => {
-  const rekt = petContainer.getBoundingClientRect();
-  const anchorX = rekt.left + rekt.width / 2;
-  const anchorY = rekt.top + rekt.height / 2;
-  
-  const angleDeg = angle(e.clientX, e.clientY, anchorX, anchorY);
-  
-  // Limit eye movement (Adjusted for new SVG scale)
-  const eyesX = Math.cos(angleDeg * Math.PI / 180) * 3;
-  const eyesY = Math.sin(angleDeg * Math.PI / 180) * 3;
-  
-  petEyes.style.transform = `translate(${eyesX}px, ${eyesY}px)`;
+  if (eyeFrameId) return;
+
+  eyeFrameId = requestAnimationFrame(() => {
+    const rekt = petContainer.getBoundingClientRect();
+    const anchorX = rekt.left + rekt.width / 2;
+    const anchorY = rekt.top + rekt.height / 2;
+    
+    const angleDeg = angle(e.clientX, e.clientY, anchorX, anchorY);
+    
+    // Limit eye movement (Adjusted for new SVG scale)
+    const eyesX = Math.cos(angleDeg * Math.PI / 180) * 3;
+    const eyesY = Math.sin(angleDeg * Math.PI / 180) * 3;
+    
+    petEyes.style.transform = `translate(${eyesX}px, ${eyesY}px)`;
+    
+    eyeFrameId = null;
+  });
 });
 
 function angle(cx, cy, ex, ey) {
