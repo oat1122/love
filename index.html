@@ -56,8 +56,30 @@
     <!-- Main Container -->
     <div class="w-full sm:max-w-md mx-auto min-h-screen relative pb-20 flex flex-col gap-6 p-6 z-10">
       
+      <!-- Love Meter -->
+      <div class="fixed top-0 left-0 w-full z-40 pointer-events-none px-4 py-2">
+        <div class="max-w-md mx-auto bg-white/90 backdrop-blur-sm rounded-b-2xl shadow-md border-x border-b border-pink-200 p-2 flex items-center gap-3 transition-transform duration-300 pointer-events-auto" id="love-meter-container">
+          <div class="text-2xl animate-pulse">💖</div>
+          <div class="flex-1">
+            <div class="flex justify-between text-xs font-bold text-pink-400 mb-1">
+              <span>Love Level</span>
+              <span id="love-percent">0%</span>
+            </div>
+            <div class="w-full bg-pink-100 rounded-full h-3 overflow-hidden border border-pink-200">
+              <div id="love-bar" class="bg-gradient-to-r from-pink-300 to-hot-pink h-full rounded-full transition-all duration-500 w-0 relative">
+                <div class="absolute inset-0 bg-white/30 w-full h-full animate-[shimmer_2s_infinite]"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Emoji Toggle -->
+          <button onclick="toggleEmojiMode()" id="emoji-toggle-btn" class="bg-pink-50 p-2 rounded-full shadow-sm border border-pink-100 text-lg hover:scale-110 transition flex-shrink-0">
+            ❤️
+          </button>
+        </div>
+      </div>
+      
       <!-- Header -->
-      <header class="text-center pt-8 pb-4">
+      <header class="text-center pt-28 pb-4">
         <div class="inline-block relative">
           <h1 class="text-3xl font-bold text-hot-pink drop-shadow-sm">Heart Station 💖</h1>
           <div class="absolute -top-6 -right-6 text-4xl animate-bounce">✨</div>
@@ -171,12 +193,7 @@
 
     </div>
 
-    <!-- Floating Emoji Toggle -->
-    <div class="fixed top-4 right-4 z-50">
-      <button onclick="toggleEmojiMode()" id="emoji-toggle-btn" class="bg-white/80 backdrop-blur-md p-2 rounded-full shadow-lg border border-pink-200 text-xl hover:scale-110 transition">
-        ❤️
-      </button>
-    </div>
+
 
     <!-- Open When Modal -->
     <div id="envelope-modal" class="fixed inset-0 z-[60] hidden flex justify-center items-center bg-black/40 backdrop-blur-sm p-4 transition-opacity duration-300 opacity-0">
@@ -201,6 +218,57 @@
 
     <!-- Audio Element -->
     <audio id="bgMusic" loop></audio>
+
+    <!-- Virtual Pet -->
+    <div id="pet-container" class="fixed bottom-28 right-4 md:bottom-4 z-40 cursor-pointer hover:scale-110 transition-transform duration-300 group">
+      <div class="relative w-20 h-20 md:w-28 md:h-28">
+        <!-- Speech Bubble -->
+        <div id="pet-speech" class="absolute -top-8 right-12 bg-white px-3 py-1 rounded-xl rounded-br-none shadow-md text-xs font-bold text-pink-500 whitespace-nowrap opacity-0 transition-opacity duration-300 border border-pink-100 z-50">
+          เมี๊ยว~ 🐱
+        </div>
+        
+        <!-- Cute Animated Cat SVG -->
+        <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-xl overflow-visible">
+          <g id="pet-body" class="transition-transform duration-200 origin-bottom">
+            <!-- Tail -->
+            <path d="M170 150 Q190 120 170 100" fill="none" stroke="#FFDAB9" stroke-width="8" stroke-linecap="round">
+              <animate attributeName="d" values="M170 150 Q190 120 170 100; M170 150 Q195 130 175 110; M170 150 Q190 120 170 100" dur="2s" repeatCount="indefinite"/>
+            </path>
+            
+            <!-- Body -->
+            <ellipse cx="100" cy="140" rx="60" ry="50" fill="#FFF5EE" />
+            
+            <!-- Ears -->
+            <path d="M60 110 L50 70 L80 95 Z" fill="#FFDAB9" stroke="#FFB7B2" stroke-width="3"/>
+            <path d="M140 110 L150 70 L120 95 Z" fill="#FFDAB9" stroke="#FFB7B2" stroke-width="3"/>
+            
+            <!-- Face Background -->
+            <circle cx="100" cy="110" r="45" fill="#FFF5EE" />
+            
+            <!-- Cheeks -->
+            <circle cx="75" cy="115" r="6" fill="#FFB6C1" opacity="0.6">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="125" cy="115" r="6" fill="#FFB6C1" opacity="0.6">
+               <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            
+            <!-- Eyes (Tracking) -->
+            <g id="pet-eyes">
+              <circle class="eye-ball" cx="85" cy="105" r="5" fill="#4A4A4A"/>
+              <circle class="eye-ball" cx="115" cy="105" r="5" fill="#4A4A4A"/>
+            </g>
+            
+            <!-- Mouth -->
+            <path d="M95 118 Q100 123 105 118" fill="none" stroke="#4A4A4A" stroke-width="3" stroke-linecap="round"/>
+            
+            <!-- Paws -->
+            <ellipse cx="70" cy="160" rx="12" ry="8" fill="#FFF5EE" stroke="#FFDAB9" stroke-width="2"/>
+            <ellipse cx="130" cy="160" rx="12" ry="8" fill="#FFF5EE" stroke="#FFDAB9" stroke-width="2"/>
+          </g>
+        </svg>
+      </div>
+    </div>
 
     <!-- Script -->
     <script src="script.js"></script>

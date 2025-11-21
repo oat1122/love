@@ -340,4 +340,145 @@ function closeEnvelope() {
   }, 300);
 }
 
+// --- 6. VIRTUAL PET LOGIC ---
+const petContainer = document.getElementById("pet-container");
+const petBody = document.getElementById("pet-body");
+const petEyes = document.getElementById("pet-eyes");
+const petSpeech = document.getElementById("pet-speech");
+
+// Eye Tracking
+document.addEventListener("mousemove", (e) => {
+  const rekt = petContainer.getBoundingClientRect();
+  const anchorX = rekt.left + rekt.width / 2;
+  const anchorY = rekt.top + rekt.height / 2;
+  
+  const angleDeg = angle(e.clientX, e.clientY, anchorX, anchorY);
+  
+  // Limit eye movement (Adjusted for new SVG scale)
+  const eyesX = Math.cos(angleDeg * Math.PI / 180) * 3;
+  const eyesY = Math.sin(angleDeg * Math.PI / 180) * 3;
+  
+  petEyes.style.transform = `translate(${eyesX}px, ${eyesY}px)`;
+});
+
+function angle(cx, cy, ex, ey) {
+  const dy = ey - cy;
+  const dx = ex - cx;
+  const rad = Math.atan2(dy, dx);
+  const deg = rad * 180 / Math.PI;
+  return deg;
+}
+
+// Pet Interaction
+petContainer.addEventListener("click", () => {
+  // Jump Animation
+  petBody.classList.add("pet-jump");
+  setTimeout(() => {
+    petBody.classList.remove("pet-jump");
+  }, 500);
+  
+  // Speech Bubble
+  const phrases = [
+    "เมี๊ยว~ 🐱", 
+    "รักนะต้าวบ้า 💖", 
+    "หิวหนมจัง 🐟", 
+    "เกาพุงหน่อย~ 💕", 
+    "ง่วงแย้ว... 😴",
+    "สู้ๆ นะคนเก่ง ✌️",
+    "คิดถึงจังเลย 🥰"
+  ];
+  petSpeech.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+  petSpeech.classList.remove("opacity-0");
+  setTimeout(() => {
+    petSpeech.classList.add("opacity-0");
+  }, 2500);
+  
+  // Increase Love
+  increaseLove(5);
+});
+
+// --- 7. CLICK PARTICLES ---
+document.addEventListener("click", (e) => {
+  createClickParticle(e.clientX, e.clientY);
+});
+
+function createClickParticle(x, y) {
+  const particle = document.createElement("div");
+  particle.classList.add("click-particle");
+  particle.innerText = ["❤️", "💖", "✨", "🌸", "💊"][Math.floor(Math.random() * 5)];
+  particle.style.left = `${x}px`;
+  particle.style.top = `${y}px`;
+  particle.style.transform = `rotate(${Math.random() * 360}deg)`;
+  
+  document.body.appendChild(particle);
+  
+  setTimeout(() => {
+    particle.remove();
+  }, 1000);
+}
+
+// --- 8. LOVE METER LOGIC ---
+let loveLevel = 0;
+const loveBar = document.getElementById("love-bar");
+const lovePercent = document.getElementById("love-percent");
+
+function increaseLove(amount) {
+  if (loveLevel >= 100) return;
+  
+  loveLevel = Math.min(100, loveLevel + amount);
+  updateLoveMeter();
+  
+  if (loveLevel === 100) {
+    triggerSuperLoveMode();
+  }
+}
+
+function updateLoveMeter() {
+  loveBar.style.width = `${loveLevel}%`;
+  lovePercent.innerText = `${loveLevel}%`;
+}
+
+function triggerSuperLoveMode() {
+  // Confetti Explosion
+  const duration = 3000;
+  const end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 5,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors: ['#FF69B4', '#FFC0CB']
+    });
+    confetti({
+      particleCount: 5,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors: ['#FF69B4', '#FFC0CB']
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  }());
+  
+  // Special Toast
+  const toast = document.getElementById("sweet-toast");
+  toast.innerText = "MAXIMUM LOVE REACHED! 💖💖💖";
+  toast.classList.remove("hidden");
+  toast.classList.add("animate-bounce");
+  
+  // Reset after delay
+  setTimeout(() => {
+    loveLevel = 0;
+    updateLoveMeter();
+    toast.classList.add("hidden");
+  }, 5000);
+}
+
+// Hook into existing functions to increase love - REMOVED as per user request
+// Love Level now only increases when clicking the pet.
+
 

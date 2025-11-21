@@ -79,3 +79,33 @@ body {
   background: #ffb6c1;
   border-radius: 10px;
 }
+
+/* --- Love Meter Shimmer --- */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* --- Pet Animations --- */
+.pet-jump {
+  animation: petJump 0.5s ease-in-out;
+}
+
+@keyframes petJump {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.1); }
+}
+
+/* --- Click Particle --- */
+.click-particle {
+  position: fixed;
+  pointer-events: none;
+  animation: particleFade 1s ease-out forwards;
+  z-index: 9999;
+  font-size: 1.5rem;
+}
+
+@keyframes particleFade {
+  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+  100% { transform: translate(-50%, -150%) scale(1.5); opacity: 0; }
+}
