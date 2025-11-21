@@ -36,9 +36,9 @@
         theme: {
           extend: {
             colors: {
-              "soft-pink": "#FFC0CB",
-              "hot-pink": "#FF69B4",
-              "pastel-pink": "#FFF0F5",
+              "soft-pink": "var(--color-secondary)",
+              "hot-pink": "var(--color-primary)",
+              "pastel-pink": "var(--color-bg)",
             },
             fontFamily: {
               mali: ["Mali", "cursive"],
@@ -105,17 +105,32 @@
         <div id="mood-response" class="hidden mt-4 text-center text-sm text-gray-600 bg-white/80 p-3 rounded-xl border border-pink-100 shadow-inner"></div>
       </section>
 
-      <!-- 3. BREATHING BUDDY -->
-      <section class="bg-gradient-to-br from-blue-50 to-pink-50 rounded-2xl p-6 shadow-md text-center relative overflow-hidden transition-colors duration-500" id="breathing-section">
-        <h3 id="breathing-title" class="text-pink-400 font-bold mb-6 relative z-10 transition-all duration-300">หายใจเข้าลึกๆ นะ...</h3>
-        <div class="relative h-32 flex justify-center items-center z-10">
-          <div id="breathing-circle-outer" class="breathing-circle w-24 h-24 bg-gradient-to-r from-blue-200 to-pink-200 rounded-full opacity-80 blur-sm absolute transition-all duration-500"></div>
-          <div id="breathing-icon" class="breathing-circle-inner w-20 h-20 bg-white rounded-full flex justify-center items-center shadow-sm text-2xl relative transition-all duration-300">
-            💨
-          </div>
+      <!-- 3. OPEN WHEN... (New Gimmick) -->
+      <section class="bg-pink-50/80 backdrop-blur-sm rounded-2xl p-5 shadow-md border border-pink-100">
+        <h3 class="text-center text-pink-400 font-bold mb-4">เปิดเมื่อ... 💌</h3>
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="openEnvelope('miss')" class="bg-white p-3 rounded-xl shadow-sm hover:shadow-md hover:scale-105 transition flex items-center gap-2 group">
+            <span class="text-2xl group-hover:animate-bounce">🌙</span>
+            <span class="text-xs text-gray-500 font-bold">คิดถึงเค้า</span>
+          </button>
+          <button onclick="openEnvelope('tired')" class="bg-white p-3 rounded-xl shadow-sm hover:shadow-md hover:scale-105 transition flex items-center gap-2 group">
+            <span class="text-2xl group-hover:animate-bounce">🔋</span>
+            <span class="text-xs text-gray-500 font-bold">หมดไฟ</span>
+          </button>
+          <button onclick="openEnvelope('sad')" class="bg-white p-3 rounded-xl shadow-sm hover:shadow-md hover:scale-105 transition flex items-center gap-2 group">
+            <span class="text-2xl group-hover:animate-bounce">☔</span>
+            <span class="text-xs text-gray-500 font-bold">ฝนตกในใจ</span>
+          </button>
+          <button onclick="openEnvelope('love')" class="bg-white p-3 rounded-xl shadow-sm hover:shadow-md hover:scale-105 transition flex items-center gap-2 group">
+            <span class="text-2xl group-hover:animate-bounce">💖</span>
+            <span class="text-xs text-gray-500 font-bold">อยากบอกรัก</span>
+          </button>
         </div>
-        <p id="breathing-text" class="text-xs text-gray-400 mt-4 relative z-10 transition-all duration-300">หายใจเข้า... หายใจออก...</p>
       </section>
+
+
+
+
 
       <!-- 4. MINI MUSIC PLAYER -->
       <div class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white/90 backdrop-blur-md rounded-full p-2 shadow-2xl border border-pink-200 flex items-center gap-3 z-50">
@@ -154,6 +169,34 @@
         Made with <i class="fas fa-heart text-red-400 animate-pulse"></i> for You
       </footer>
 
+    </div>
+
+    <!-- Floating Emoji Toggle -->
+    <div class="fixed top-4 right-4 z-50">
+      <button onclick="toggleEmojiMode()" id="emoji-toggle-btn" class="bg-white/80 backdrop-blur-md p-2 rounded-full shadow-lg border border-pink-200 text-xl hover:scale-110 transition">
+        ❤️
+      </button>
+    </div>
+
+    <!-- Open When Modal -->
+    <div id="envelope-modal" class="fixed inset-0 z-[60] hidden flex justify-center items-center bg-black/40 backdrop-blur-sm p-4 transition-opacity duration-300 opacity-0">
+      <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl transform scale-90 transition-transform duration-300 relative overflow-hidden" id="modal-content">
+        <!-- Decorative background -->
+        <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-pink-100 to-white -z-10"></div>
+        
+        <button onclick="closeEnvelope()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <div class="text-center mt-4">
+          <div class="text-6xl mb-4 animate-bounce" id="modal-icon">💌</div>
+          <h3 class="text-xl font-bold text-pink-500 mb-2" id="modal-title">Title</h3>
+          <p class="text-gray-600 text-sm leading-relaxed mb-6" id="modal-message">Message goes here...</p>
+          <button onclick="closeEnvelope()" class="bg-pink-400 text-white px-6 py-2 rounded-full font-bold shadow-md hover:bg-pink-500 transition w-full">
+            รับทราบครับผม! 🫡
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Audio Element -->

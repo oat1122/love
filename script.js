@@ -1,21 +1,100 @@
-// --- 1. FLOATING HEARTS BG ---
+// --- 1. FLOATING EMOJI BG ---
+// --- 1. FLOATING EMOJI BG ---
+const emojiModes = [
+  { 
+    icon: "❤️", 
+    colors: ["#FFC0CB", "#FF69B4", "#FFB6C1", "#FF1493", "#E6E6FA"],
+    theme: {
+      bg: "#FFF0F5",
+      primary: "#FF69B4",
+      secondary: "#FFC0CB",
+      accent: "#FFB6C1",
+      text: "#4b5563"
+    }
+  },
+  { 
+    icon: "✨", 
+    colors: ["#FFD700", "#FFFACD", "#FAFAD2", "#FFE4B5", "#FFFFFF"],
+    theme: {
+      bg: "#FFFFF0", // Ivory
+      primary: "#FFD700", // Gold
+      secondary: "#F0E68C", // Khaki
+      accent: "#FFFACD", // LemonChiffon
+      text: "#5D4037" // Brown
+    }
+  },
+  { 
+    icon: "😸", 
+    colors: ["#FFDAB9", "#FFE4E1", "#FFF0F5", "#E6E6FA", "#FFFFFF"],
+    theme: {
+      bg: "#FFF5EE", // Seashell
+      primary: "#FF7F50", // Coral
+      secondary: "#FFDAB9", // PeachPuff
+      accent: "#FFE4E1", // MistyRose
+      text: "#4A4A4A" // Dark Gray
+    }
+  },
+  { 
+    icon: "🌸", 
+    colors: ["#FFB7B2", "#FFDAC1", "#E2F0CB", "#B5EAD7", "#C7CEEA"],
+    theme: {
+      bg: "#F0FFF0", // Honeydew
+      primary: "#FF69B4", // HotPink (keep pink for flowers)
+      secondary: "#98FB98", // PaleGreen
+      accent: "#D8BFD8", // Thistle
+      text: "#2F4F4F" // DarkSlateGray
+    }
+  }
+];
+let currentModeIndex = 0;
+
 function createHeart() {
   const heart = document.createElement("div");
   heart.classList.add("floating-heart");
-  const size = Math.random() * 20 + 10 + "px";
-  heart.style.width = size;
-  heart.style.height = size;
+  
+  // Set content based on mode
+  const mode = emojiModes[currentModeIndex];
+  
+  // 50% chance to be the icon, 50% chance to be a colored circle (original style)
+  if (Math.random() > 0.5) {
+      heart.innerText = mode.icon;
+      heart.style.display = "flex";
+      heart.style.justifyContent = "center";
+      heart.style.alignItems = "center";
+      heart.style.fontSize = Math.random() * 20 + 10 + "px";
+      heart.style.backgroundColor = "transparent";
+  } else {
+      const size = Math.random() * 15 + 5 + "px";
+      heart.style.width = size;
+      heart.style.height = size;
+      heart.style.backgroundColor = mode.colors[Math.floor(Math.random() * mode.colors.length)];
+  }
+
   heart.style.left = Math.random() * 100 + "vw";
   heart.style.animationDuration = Math.random() * 5 + 5 + "s";
-  const colors = ["#FFC0CB", "#FF69B4", "#FFB6C1", "#FF1493", "#E6E6FA"];
-  heart.style.backgroundColor =
-    colors[Math.floor(Math.random() * colors.length)];
+  
   document.getElementById("heart-container").appendChild(heart);
   setTimeout(() => {
     heart.remove();
   }, 10000);
 }
 setInterval(createHeart, 800);
+
+function toggleEmojiMode() {
+  currentModeIndex = (currentModeIndex + 1) % emojiModes.length;
+  const mode = emojiModes[currentModeIndex];
+  
+  // Update Button Icon
+  document.getElementById("emoji-toggle-btn").innerText = mode.icon;
+  
+  // Update Theme Colors
+  const root = document.documentElement;
+  root.style.setProperty('--color-bg', mode.theme.bg);
+  root.style.setProperty('--color-primary', mode.theme.primary);
+  root.style.setProperty('--color-secondary', mode.theme.secondary);
+  root.style.setProperty('--color-accent', mode.theme.accent);
+  root.style.setProperty('--color-text', mode.theme.text);
+}
 
 // --- 2. PILL BUTTON (RANDOM MESSAGE) ---
 const sweetMessages = [
@@ -60,33 +139,6 @@ const moodMessages = {
   stressed: "หายใจเข้าลึกๆ... ปล่อยวางเรื่องหนักๆ ลงบ้างนะ กอดๆ 🤗"
 };
 
-const moodBreathingData = {
-  happy: {
-    title: "ส่งต่อพลังบวก! ✨",
-    icon: "✨",
-    text: "หายใจเข้า... เก็บความสุข... หายใจออก... ยิ้มกว้างๆ",
-    color: "from-yellow-200 to-orange-200"
-  },
-  tired: {
-    title: "พักสายตาสักนิดนะ 💤",
-    icon: "💤",
-    text: "หายใจเข้า... ผ่อนคลาย... หายใจออก... ทิ้งความล้า",
-    color: "from-blue-200 to-indigo-200"
-  },
-  sad: {
-    title: "กอดๆ นะคนเก่ง 🧸",
-    icon: "🧸",
-    text: "หายใจเข้า... รับกำลังใจ... หายใจออก... ความเศร้าจางไป",
-    color: "from-indigo-200 to-purple-200"
-  },
-  stressed: {
-    title: "ใจเย็นๆ ค่อยๆ แก้ไป 🍃",
-    icon: "🍃",
-    text: "หายใจเข้าลึกๆ... 1-2-3... หายใจออกยาวๆ...",
-    color: "from-green-200 to-teal-200"
-  }
-};
-
 function handleMood(mood) {
   // 1. Update Message
   const responseDiv = document.getElementById("mood-response");
@@ -100,35 +152,6 @@ function handleMood(mood) {
       responseDiv.style.opacity = 1;
       responseDiv.style.transform = "translateY(0)";
   }, 50);
-
-  // 2. Update Breathing Section
-  const data = moodBreathingData[mood];
-  if (data) {
-    const title = document.getElementById("breathing-title");
-    const icon = document.getElementById("breathing-icon");
-    const text = document.getElementById("breathing-text");
-    const outerCircle = document.getElementById("breathing-circle-outer");
-
-    // Fade out
-    title.style.opacity = 0;
-    icon.style.opacity = 0;
-    text.style.opacity = 0;
-    
-    setTimeout(() => {
-      // Change content
-      title.innerText = data.title;
-      icon.innerText = data.icon;
-      text.innerText = data.text;
-      
-      // Change color (remove old gradient classes and add new ones)
-      outerCircle.className = `breathing-circle w-24 h-24 bg-gradient-to-r ${data.color} rounded-full opacity-80 blur-sm absolute transition-all duration-500`;
-
-      // Fade in
-      title.style.opacity = 1;
-      icon.style.opacity = 1;
-      text.style.opacity = 1;
-    }, 300);
-  }
 }
 // --- 4. AUDIO PLAYER ---
 const audio = document.getElementById("bgMusic");
@@ -261,3 +284,60 @@ function updateVolumeIcon(volume) {
     volumeIcon.classList.add("fa-volume-up");
   }
 }
+
+// --- 5. OPEN WHEN ENVELOPES ---
+const envelopeData = {
+  miss: {
+    title: "เมื่อคิดถึงเค้า... 🌙",
+    message: "มองไปที่ดวงจันทร์นะ เค้าก็มองมันอยู่เหมือนกัน ไม่ว่าเราจะอยู่ไกลกันแค่ไหน แต่เราอยู่ใต้ฟ้าเดียวกันเสมอ คิดถึงนะคนเก่ง",
+    icon: "🌙"
+  },
+  tired: {
+    title: "เมื่อรู้สึกหมดไฟ... 🔋",
+    message: "พักก่อนได้ไหม? ไม่ต้องรีบวิ่งตลอดเวลาก็ได้นะ การพักผ่อนคืองานที่สำคัญที่สุดของคนเก่งแบบเธอนะ รู้มั้ย?",
+    icon: "🔋"
+  },
+  sad: {
+    title: "เมื่อฝนตกในใจ... ☔",
+    message: "ร้องไห้ออกมาได้เลยนะ ไหล่เค้าว่างเสมอสำหรับเธอ ฟ้าหลังฝนจะสดใสเสมอ และเค้าจะถือร่มให้เธอเอง",
+    icon: "☔"
+  },
+  love: {
+    title: "เมื่ออยากบอกรัก... 💖",
+    message: "รักเธอนะ รักที่สุดในโลกเลย ขอบคุณที่มีเธออยู่ในชีวิตนะ เธอคือของขวัญที่ดีที่สุดของเค้าเลย",
+    icon: "💖"
+  }
+};
+
+function openEnvelope(type) {
+  const modal = document.getElementById("envelope-modal");
+  const content = document.getElementById("modal-content");
+  const data = envelopeData[type];
+  
+  document.getElementById("modal-title").innerText = data.title;
+  document.getElementById("modal-message").innerText = data.message;
+  document.getElementById("modal-icon").innerText = data.icon;
+  
+  modal.classList.remove("hidden");
+  // Small delay to allow display:block to apply before opacity transition
+  setTimeout(() => {
+    modal.classList.remove("opacity-0");
+    content.classList.remove("scale-90");
+    content.classList.add("scale-100");
+  }, 10);
+}
+
+function closeEnvelope() {
+  const modal = document.getElementById("envelope-modal");
+  const content = document.getElementById("modal-content");
+  
+  modal.classList.add("opacity-0");
+  content.classList.remove("scale-100");
+  content.classList.add("scale-90");
+  
+  setTimeout(() => {
+    modal.classList.add("hidden");
+  }, 300);
+}
+
+
