@@ -56,16 +56,43 @@ function randomMessage() {
 const moodMessages = {
   happy: "ดีใจที่เห็นเธอยิ้มนะ! เก็บความสุขนี้ไว้นานๆ เลย 🥰",
   tired: "เหนื่อยใช่ไหม? พักผ่อนเยอะๆ นะ คนเก่งต้องชาร์จแบตบ้าง 🔋",
-  sad: "โอ๋ๆ ไม่ร้องนะ... ฟ้าหลังฝนสวยงามเสมอ เค้าอยู่ข้างๆ นะ 🌈",
+  sad: "โอ๋ๆ ไม่ร้องนะ... ฟ้าหลังฝนสวยงามเสมอ มากอดๆ 🌈",
   stressed: "หายใจเข้าลึกๆ... ปล่อยวางเรื่องหนักๆ ลงบ้างนะ กอดๆ 🤗"
 };
 
+const moodBreathingData = {
+  happy: {
+    title: "ส่งต่อพลังบวก! ✨",
+    icon: "✨",
+    text: "หายใจเข้า... เก็บความสุข... หายใจออก... ยิ้มกว้างๆ",
+    color: "from-yellow-200 to-orange-200"
+  },
+  tired: {
+    title: "พักสายตาสักนิดนะ 💤",
+    icon: "💤",
+    text: "หายใจเข้า... ผ่อนคลาย... หายใจออก... ทิ้งความล้า",
+    color: "from-blue-200 to-indigo-200"
+  },
+  sad: {
+    title: "กอดๆ นะคนเก่ง 🧸",
+    icon: "🧸",
+    text: "หายใจเข้า... รับกำลังใจ... หายใจออก... ความเศร้าจางไป",
+    color: "from-indigo-200 to-purple-200"
+  },
+  stressed: {
+    title: "ใจเย็นๆ ค่อยๆ แก้ไป 🍃",
+    icon: "🍃",
+    text: "หายใจเข้าลึกๆ... 1-2-3... หายใจออกยาวๆ...",
+    color: "from-green-200 to-teal-200"
+  }
+};
+
 function handleMood(mood) {
+  // 1. Update Message
   const responseDiv = document.getElementById("mood-response");
   responseDiv.innerText = moodMessages[mood];
   responseDiv.classList.remove("hidden");
   
-  // Add a subtle animation
   responseDiv.style.opacity = 0;
   responseDiv.style.transform = "translateY(10px)";
   setTimeout(() => {
@@ -73,31 +100,134 @@ function handleMood(mood) {
       responseDiv.style.opacity = 1;
       responseDiv.style.transform = "translateY(0)";
   }, 50);
-}
 
+  // 2. Update Breathing Section
+  const data = moodBreathingData[mood];
+  if (data) {
+    const title = document.getElementById("breathing-title");
+    const icon = document.getElementById("breathing-icon");
+    const text = document.getElementById("breathing-text");
+    const outerCircle = document.getElementById("breathing-circle-outer");
+
+    // Fade out
+    title.style.opacity = 0;
+    icon.style.opacity = 0;
+    text.style.opacity = 0;
+    
+    setTimeout(() => {
+      // Change content
+      title.innerText = data.title;
+      icon.innerText = data.icon;
+      text.innerText = data.text;
+      
+      // Change color (remove old gradient classes and add new ones)
+      outerCircle.className = `breathing-circle w-24 h-24 bg-gradient-to-r ${data.color} rounded-full opacity-80 blur-sm absolute transition-all duration-500`;
+
+      // Fade in
+      title.style.opacity = 1;
+      icon.style.opacity = 1;
+      text.style.opacity = 1;
+    }, 300);
+  }
+}
 // --- 4. AUDIO PLAYER ---
 const audio = document.getElementById("bgMusic");
 const volumeSlider = document.getElementById("volume-slider");
 const volumeIcon = document.getElementById("volume-icon");
+const musicIcon = document.getElementById("music-icon");
+const musicCover = document.getElementById("music-cover");
 
-// Set initial volume
+// Custom Dropdown Elements
+const dropdownTrigger = document.getElementById("dropdown-trigger");
+const dropdownMenu = document.getElementById("dropdown-menu");
+const currentSongTitle = document.getElementById("current-song-title");
+const dropdownArrow = document.getElementById("dropdown-arrow");
+
+// Song Data
+let songs = [
+  { title: "Wake Up Please", src: "music/Wake Up Please.mp3" },
+  { title: "1001 (You're Lovely)", src: "music/1001 (Youre Lovely) - SERIOUS BACON [ Official Lyrics ].mp3" },
+  { title: "Safeplanet - ดวงตะวัน", src: "music/Safeplanet - ดวงตะวน (The Sun) Music Video.mp3" }
+];
+
+// Set initial song
+let currentSongIndex = 0;
+
+// Populate Custom Dropdown
+function populateSongList() {
+  dropdownMenu.innerHTML = "";
+  songs.forEach((song, index) => {
+    const item = document.createElement("div");
+    item.className = `px-3 py-2 text-xs font-bold text-gray-600 hover:bg-pink-50 hover:text-pink-500 rounded-lg cursor-pointer transition-colors ${index === currentSongIndex ? 'bg-pink-50 text-pink-500' : ''}`;
+    item.textContent = song.title;
+    item.onclick = () => selectSong(index);
+    dropdownMenu.appendChild(item);
+  });
+  
+  // Update trigger text
+  if (songs[currentSongIndex]) {
+    currentSongTitle.textContent = songs[currentSongIndex].title;
+  }
+}
+
+// Toggle Dropdown
+dropdownTrigger.addEventListener("click", (e) => {
+  e.stopPropagation();
+  dropdownMenu.classList.toggle("hidden");
+  dropdownArrow.classList.toggle("rotate-180");
+});
+
+// Close Dropdown when clicking outside
+document.addEventListener("click", (e) => {
+  if (!dropdownTrigger.contains(e.target) && !dropdownMenu.contains(e.target)) {
+    dropdownMenu.classList.add("hidden");
+    dropdownArrow.classList.remove("rotate-180");
+  }
+});
+
+// Select Song Function
+function selectSong(index) {
+  currentSongIndex = index;
+  audio.src = songs[currentSongIndex].src;
+  audio.play();
+  updatePlayerState(true);
+  
+  // Update UI
+  currentSongTitle.textContent = songs[currentSongIndex].title;
+  dropdownMenu.classList.add("hidden");
+  dropdownArrow.classList.remove("rotate-180");
+  
+  // Re-render list to update active state styling
+  populateSongList();
+}
+
+// Initial Population
+populateSongList();
+audio.src = songs[currentSongIndex].src;
 audio.volume = 0.5;
 
-function toggleMusic() {
-  const icon = document.getElementById("music-icon");
-  const cover = document.getElementById("music-cover");
 
+
+function updatePlayerState(isPlaying) {
+  if (isPlaying) {
+    musicIcon.classList.remove("fa-music");
+    musicIcon.classList.add("fa-pause");
+    musicCover.classList.add("rotate-center");
+    musicCover.classList.remove("paused-animation");
+  } else {
+    musicIcon.classList.add("fa-music");
+    musicIcon.classList.remove("fa-pause");
+    musicCover.classList.add("paused-animation");
+  }
+}
+
+function toggleMusic() {
   if (audio.paused) {
     audio.play();
-    icon.classList.remove("fa-music");
-    icon.classList.add("fa-pause");
-    cover.classList.add("rotate-center");
-    cover.classList.remove("paused-animation");
+    updatePlayerState(true);
   } else {
     audio.pause();
-    icon.classList.add("fa-music");
-    icon.classList.remove("fa-pause");
-    cover.classList.add("paused-animation");
+    updatePlayerState(false);
   }
 }
 

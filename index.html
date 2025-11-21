@@ -106,15 +106,15 @@
       </section>
 
       <!-- 3. BREATHING BUDDY -->
-      <section class="bg-gradient-to-br from-blue-50 to-pink-50 rounded-2xl p-6 shadow-md text-center relative overflow-hidden">
-        <h3 class="text-pink-400 font-bold mb-6 relative z-10">หายใจเข้าลึกๆ นะ...</h3>
+      <section class="bg-gradient-to-br from-blue-50 to-pink-50 rounded-2xl p-6 shadow-md text-center relative overflow-hidden transition-colors duration-500" id="breathing-section">
+        <h3 id="breathing-title" class="text-pink-400 font-bold mb-6 relative z-10 transition-all duration-300">หายใจเข้าลึกๆ นะ...</h3>
         <div class="relative h-32 flex justify-center items-center z-10">
-          <div class="breathing-circle w-24 h-24 bg-gradient-to-r from-blue-200 to-pink-200 rounded-full opacity-80 blur-sm absolute"></div>
-          <div class="breathing-circle-inner w-20 h-20 bg-white rounded-full flex justify-center items-center shadow-sm text-2xl relative">
+          <div id="breathing-circle-outer" class="breathing-circle w-24 h-24 bg-gradient-to-r from-blue-200 to-pink-200 rounded-full opacity-80 blur-sm absolute transition-all duration-500"></div>
+          <div id="breathing-icon" class="breathing-circle-inner w-20 h-20 bg-white rounded-full flex justify-center items-center shadow-sm text-2xl relative transition-all duration-300">
             💨
           </div>
         </div>
-        <p class="text-xs text-gray-400 mt-4 relative z-10">หายใจเข้า... หายใจออก...</p>
+        <p id="breathing-text" class="text-xs text-gray-400 mt-4 relative z-10 transition-all duration-300">หายใจเข้า... หายใจออก...</p>
       </section>
 
       <!-- 4. MINI MUSIC PLAYER -->
@@ -126,12 +126,27 @@
            </div>
         </div>
         <div class="flex-1">
-          <p class="text-xs font-bold text-gray-600 truncate">Wake Up Please.mp3</p>
+          <div class="relative w-full" id="custom-dropdown">
+            <!-- Trigger -->
+            <button id="dropdown-trigger" class="w-full bg-pink-50/80 border border-pink-200 text-pink-600 text-xs font-bold rounded-xl px-3 py-1.5 pr-8 text-left truncate focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all relative">
+              <span id="current-song-title">Select Song...</span>
+              <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-pink-400">
+                <i class="fas fa-chevron-down text-[10px] transition-transform duration-300" id="dropdown-arrow"></i>
+              </div>
+            </button>
+          
+            <!-- Dropdown Menu -->
+            <div id="dropdown-menu" class="hidden absolute bottom-full mb-2 w-full bg-white/95 backdrop-blur-md border border-pink-100 rounded-xl shadow-xl max-h-48 overflow-y-auto z-50 custom-scrollbar p-1">
+              <!-- Items will be populated by JS -->
+            </div>
+          </div>
           <input type="range" id="volume-slider" min="0" max="100" value="50" class="w-full h-1 bg-pink-200 rounded-lg appearance-none cursor-pointer accent-hot-pink">
         </div>
         <button onclick="toggleMute()" class="w-8 h-8 flex justify-center items-center text-pink-400 hover:bg-pink-50 rounded-full transition">
           <i class="fas fa-volume-up text-sm" id="volume-icon"></i>
         </button>
+        
+        
       </div>
 
       <!-- Footer -->
@@ -142,9 +157,7 @@
     </div>
 
     <!-- Audio Element -->
-    <audio id="bgMusic" loop>
-      <source src="Wake Up Please.mp3" type="audio/mpeg" />
-    </audio>
+    <audio id="bgMusic" loop></audio>
 
     <!-- Script -->
     <script src="script.js"></script>
