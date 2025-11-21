@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="500" height="500" style="background-color: #FFF0F5;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="500" height="500">
+  <rect width="100%" height="100%" fill="#FFF0F5"/>
   <g id="pet-body" transform="translate(0,0)">
     <!-- Tail -->
     <path d="M170 150 Q190 120 170 100" fill="none" stroke="#FFDAB9" stroke-width="8" stroke-linecap="round">

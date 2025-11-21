@@ -121,10 +121,10 @@ function randomMessage() {
   toast.innerText = sweetMessages[randomIndex];
   toast.classList.remove("hidden");
 
-  // Trigger bounce animation
-  toast.classList.remove("animate-bounce");
+  // Trigger pop animation
+  toast.classList.remove("animate-pop");
   void toast.offsetWidth; // trigger reflow
-  toast.classList.add("animate-bounce");
+  toast.classList.add("animate-pop");
   
   // Confetti effect
   const isMobile = window.innerWidth < 768;
