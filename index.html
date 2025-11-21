@@ -9,7 +9,7 @@
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>"
     />
 
-    <!-- Import Tailwind CSS (ใช้ CDN เพื่อความสะดวก) -->
+    <!-- Import Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Import Google Fonts -->
@@ -27,7 +27,7 @@
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    <!-- เชื่อมต่อไฟล์ CSS ของเรา -->
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css" />
 
     <!-- Config Tailwind Theme -->
@@ -48,359 +48,105 @@
       };
     </script>
   </head>
-  <body class="text-gray-600 relative overflow-x-hidden">
-    <!-- Background Hearts -->
+  <body class="text-gray-600 relative overflow-x-hidden bg-[#FFF0F5] font-mali">
+    <!-- Background Elements -->
     <div class="heart-bg" id="heart-container"></div>
+    <div class="fixed inset-0 pointer-events-none z-0 opacity-30" style="background-image: radial-gradient(#FFC0CB 1px, transparent 1px); background-size: 20px 20px;"></div>
 
-    <!-- Container หลัก -->
-    <div
-      class="w-full sm:max-w-md mx-auto bg-white/80 backdrop-blur-sm min-h-screen shadow-2xl sm:border-x-4 border-soft-pink relative pb-10 overflow-hidden"
-    >
-      <!-- Washi Tape Decoration -->
-      <div
-        class="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-pink-200/60 -rotate-2 shadow-sm z-20 backdrop-blur-[1px]"
-      ></div>
-      <div
-        class="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-pink-300/20 rotate-1 z-20"
-      ></div>
-
-      <!-- Sticker Decorations -->
-      <div
-        class="absolute -top-6 -right-2 sm:-right-6 text-4xl text-hot-pink/40 rotate-12 z-0 animate-pulse"
-      >
-        <i class="fas fa-heart"></i>
-      </div>
-      <div
-        class="absolute bottom-20 -left-2 sm:-left-4 text-3xl text-yellow-400/60 -rotate-12 z-0"
-      >
-        <i class="fas fa-star"></i>
-      </div>
-
-      <!-- 1. HERO SECTION -->
-      <section
-        class="min-h-screen flex flex-col justify-center items-center text-center p-6 relative overflow-hidden"
-      >
-        <div
-          class="absolute top-10 right-10 text-soft-pink opacity-50 text-6xl animate-pulse"
-        >
-          <i class="fas fa-heart"></i>
+    <!-- Main Container -->
+    <div class="w-full sm:max-w-md mx-auto min-h-screen relative pb-20 flex flex-col gap-6 p-6 z-10">
+      
+      <!-- Header -->
+      <header class="text-center pt-8 pb-4">
+        <div class="inline-block relative">
+          <h1 class="text-3xl font-bold text-hot-pink drop-shadow-sm">Heart Station 💖</h1>
+          <div class="absolute -top-6 -right-6 text-4xl animate-bounce">✨</div>
         </div>
-        <div
-          class="absolute bottom-20 left-10 text-soft-pink opacity-50 text-4xl animate-pulse"
-          style="animation-delay: 0.5s"
-        >
-          <i class="fas fa-heart"></i>
-        </div>
+        <p class="text-gray-400 text-sm mt-2">พื้นที่เติมพลังใจ สำหรับคนเก่ง</p>
+      </header>
 
-        <!-- Profile Image -->
-        <div
-          class="relative w-40 h-40 sm:w-48 sm:h-48 mb-6 group cursor-pointer animate-float"
-          onclick="toggleMusic()"
-        >
-          <div
-            class="absolute inset-0 bg-hot-pink rounded-full opacity-20 group-hover:scale-110 transition-transform duration-500"
-          ></div>
-          <div
-            class="w-full h-full rounded-full border-4 border-white shadow-lg overflow-hidden relative z-10"
-          >
-            <img
-              id="music-cover"
-              src="https://api.dicebear.com/9.x/avataaars/svg?seed=Love&backgroundColor=ffdfbf"
-              alt="Couple"
-              class="w-full h-full object-cover transition-transform duration-700"
-            />
+      <!-- 1. PILL BUTTON (Core Feature) -->
+      <section class="transform hover:scale-105 transition duration-300">
+        <div class="w-full bg-white/80 backdrop-blur-sm border-2 border-dashed border-pink-300 rounded-2xl p-6 relative text-center shadow-lg">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-pink-100 text-pink-500 px-3 py-1 rounded-full text-xs font-bold">
+            Daily Vitamin
           </div>
-          <div
-            class="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow text-hot-pink z-20 text-xs"
-          >
-            <i class="fas fa-music" id="music-icon"></i>
-          </div>
-        </div>
-
-        <!-- Volume Control -->
-        <div class="mt-8 w-72 max-w-full px-4">
-          <div
-            class="bg-white/90 backdrop-blur-sm rounded-2xl p-5 shadow-lg border-2 border-pink-100"
-          >
-            <div class="flex items-center gap-4">
-              <button
-                onclick="toggleMute()"
-                class="text-hot-pink hover:scale-110 transition-transform text-xl flex-shrink-0"
-              >
-                <i class="fas fa-volume-up" id="volume-icon"></i>
-              </button>
-              <input
-                type="range"
-                id="volume-slider"
-                min="0"
-                max="100"
-                value="50"
-                class="flex-1 h-2 bg-pink-200 rounded-lg appearance-none cursor-pointer"
-                style="accent-color: #ff69b4"
-              />
-              <span
-                id="volume-percent"
-                class="text-sm text-gray-600 font-bold w-12 text-right flex-shrink-0"
-                >50%</span
-              >
-            </div>
-          </div>
-        </div>
-
-        <h1
-          class="text-3xl sm:text-4xl font-bold text-hot-pink mb-2 drop-shadow-sm reveal mt-10"
-        >
-          For My Boo <span class="text-red-500">♥</span>
-        </h1>
-        <p
-          class="text-base sm:text-lg text-gray-500 mb-8 px-4 reveal"
-          style="transition-delay: 0.2s"
-        >
-          ความบังเอิญทำให้เราเจอกัน<br />แต่ความตั้งใจทำให้เรารักกันนะ
-        </p>
-
-        <div class="animate-bounce text-hot-pink mt-10">
-          <i class="fas fa-chevron-down text-2xl"></i>
-        </div>
-      </section>
-
-      <!-- 2. RELATIONSHIP TIMER -->
-      <section
-        class="py-8 px-4 sm:px-6 bg-gradient-to-b from-white to-pastel-pink rounded-t-3xl -mt-10 z-10 relative reveal"
-      >
-        <h2
-          class="text-xl sm:text-2xl font-bold text-center text-hot-pink mb-6"
-        >
-          <i class="fas fa-hourglass-half mr-2"></i>เวลาของเรา
-        </h2>
-
-        <div
-          class="grid grid-cols-4 gap-2 text-center bg-white p-4 rounded-2xl shadow-sm border-2 border-pink-100"
-        >
-          <div class="p-2">
-            <span id="days" class="block text-2xl font-bold text-gray-700"
-              >0</span
-            ><span class="text-xs text-pink-400">Days</span>
-          </div>
-          <div class="p-2 border-l border-pink-100">
-            <span id="hours" class="block text-2xl font-bold text-gray-700"
-              >0</span
-            ><span class="text-xs text-pink-400">Hours</span>
-          </div>
-          <div class="p-2 border-l border-pink-100">
-            <span id="minutes" class="block text-2xl font-bold text-gray-700"
-              >0</span
-            ><span class="text-xs text-pink-400">Mins</span>
-          </div>
-          <div class="p-2 border-l border-pink-100">
-            <span
-              id="seconds"
-              class="block text-2xl font-bold text-hot-pink animate-pulse"
-              >0</span
-            ><span class="text-xs text-pink-400">Secs</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3. MEMORY LANE -->
-      <section class="py-8 px-4 reveal">
-        <h2
-          class="text-xl sm:text-2xl font-bold text-center text-hot-pink mb-8"
-        >
-          <i class="fas fa-camera mr-2"></i>ความทรงจำ
-        </h2>
-        <div class="grid grid-cols-2 gap-4">
-          <div class="polaroid rotate-2">
-            <div class="bg-gray-200 h-32 rounded overflow-hidden mb-2">
-              <img
-                src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop"
-                class="w-full h-full object-cover cursor-zoom-in"
-                onclick="openLightbox(this.src)"
-              />
-            </div>
-            <p class="text-center text-xs font-bold text-gray-500">เดทแรก</p>
-          </div>
-          <div class="polaroid -rotate-2 mt-6">
-            <div class="bg-gray-200 h-32 rounded overflow-hidden mb-2">
-              <img
-                src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=400&auto=format&fit=crop"
-                class="w-full h-full object-cover cursor-zoom-in"
-                onclick="openLightbox(this.src)"
-              />
-            </div>
-            <p class="text-center text-xs font-bold text-gray-500">ทะเลหวาน</p>
-          </div>
-          <div class="polaroid rotate-1">
-            <div class="bg-gray-200 h-32 rounded overflow-hidden mb-2">
-              <img
-                src="https://images.unsplash.com/photo-1516961642265-531546e84af2?q=80&w=400&auto=format&fit=crop"
-                class="w-full h-full object-cover cursor-zoom-in"
-                onclick="openLightbox(this.src)"
-              />
-            </div>
-            <p class="text-center text-xs font-bold text-gray-500">กินเก่ง</p>
-          </div>
-          <div class="polaroid -rotate-3 mt-6">
-            <div class="bg-gray-200 h-32 rounded overflow-hidden mb-2">
-              <img
-                src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=400&auto=format&fit=crop"
-                class="w-full h-full object-cover cursor-zoom-in"
-                onclick="openLightbox(this.src)"
-              />
-            </div>
-            <p class="text-center text-xs font-bold text-gray-500">รักที่สุด</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- 4. LETTER -->
-      <section class="py-8 px-6 bg-pink-50 reveal">
-        <div
-          class="bg-white p-6 rounded-xl shadow-md border border-pink-100 relative"
-        >
-          <div
-            class="absolute -top-3 -left-3 text-hot-pink text-3xl transform -rotate-12"
-          >
-            <i class="fas fa-envelope-open-text"></i>
-          </div>
-          <h3 class="text-lg font-bold text-gray-700 mb-4 text-center">
-            ถึง ที่รักของเค้า...
-          </h3>
-          <div class="text-sm leading-loose text-gray-600 min-h-[100px]">
-            <span id="typing-text"></span><span class="cursor">&nbsp;</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- 5. BUTTON -->
-      <section class="py-12 pb-24 text-center reveal">
-        <button
-          onclick="showSurprise()"
-          class="bg-hot-pink text-white text-lg px-8 py-3 rounded-full shadow-lg hover:bg-pink-500 hover:scale-105 transition transform duration-300 animate-bounce"
-        >
-          <i class="fas fa-gift mr-2"></i> กดตรงนี้สิ
-        </button>
-      </section>
-
-      <!-- 6. LOVE CHECK GAME -->
-      <section class="py-10 px-6 text-center reveal relative overflow-hidden">
-        <h3 class="text-xl font-bold text-hot-pink mb-6">
-          ถามจริง... รักเค้าไหม? 🥺
-        </h3>
-        <div
-          class="flex justify-center gap-4 h-16 items-start relative"
-          id="button-area"
-        >
-          <button
-            id="love-btn"
-            onclick="sayLove()"
-            class="bg-red-400 text-white px-6 py-2 rounded-full shadow-lg hover:bg-red-500 transition transform hover:scale-110 z-10"
-          >
-            รักที่สุด! ❤️
-          </button>
-
-          <button
-            id="no-btn"
-            onmousemove="runAway()"
-            class="bg-gray-300 text-gray-600 px-6 py-2 rounded-full shadow transition-all duration-300 ease-out z-10"
-          >
-            เฉยๆ อะ 🌚
-          </button>
-        </div>
-      </section>
-
-      <!-- 7. SWEET BOX -->
-      <section class="py-4 px-6 text-center reveal">
-        <div
-          class="bg-pink-50 border-2 border-dashed border-pink-200 rounded-xl p-4 relative"
-        >
-          <p class="text-gray-500 text-sm mb-3">วันไหนเหนื่อยๆ มากดปุ่มนี้นะ</p>
-          <button
-            onclick="randomMessage()"
-            class="text-3xl hover:scale-125 transition duration-300 filter drop-shadow-md"
-          >
+          <p class="text-gray-500 text-sm mb-4">วันไหนเหนื่อยๆ มากดปุ่มนี้นะ</p>
+          <button onclick="randomMessage()" class="text-6xl hover:scale-110 transition duration-300 filter drop-shadow-md active:scale-90">
             💊
           </button>
-          <div
-            id="sweet-toast"
-            class="hidden mt-4 text-hot-pink font-bold animate-bounce"
-          ></div>
+          <div id="sweet-toast" class="hidden mt-4 text-hot-pink font-bold text-lg animate-bounce bg-pink-50 p-2 rounded-lg border border-pink-100">
+            สู้ๆ นะครับคนดี ฮึบๆ 💪
+          </div>
         </div>
       </section>
 
-      <footer
-        class="text-center py-4 text-xs text-pink-300 absolute bottom-0 w-full"
-      >
-        Made with <i class="fas fa-heart text-red-400"></i> for You
-      </footer>
-
-      <!-- MODAL -->
-      <div
-        id="surpriseModal"
-        class="fixed inset-0 bg-black/60 z-[9999] hidden flex justify-center items-center p-4 backdrop-blur-sm"
-      >
-        <div
-          class="bg-white rounded-2xl p-8 max-w-sm w-full text-center transform scale-0 transition-transform duration-300 shadow-2xl border-4 border-pink-100"
-          id="modalContent"
-        >
-          <div class="text-6xl mb-4 animate-bounce">💖</div>
-          <h3 class="text-2xl font-bold text-hot-pink mb-2">รักนะต้าวอ้วน!</h3>
-          <p class="text-gray-600 mb-6">
-            ขอบคุณที่เป็นรอยยิ้มให้กันในทุกๆ วันนะ<br />อยู่ด้วยกันไปนานๆ นะครับ
-          </p>
-          <button
-            onclick="closeSurprise()"
-            class="bg-gray-100 text-gray-600 px-6 py-2 rounded-full hover:bg-hot-pink hover:text-white transition text-sm"
-          >
-            เขินจัง ปิดละ
+      <!-- 2. MOOD TRACKER -->
+      <section class="bg-white/60 backdrop-blur-sm rounded-2xl p-5 shadow-md border border-white">
+        <h3 class="text-center text-pink-400 font-bold mb-4">วันนี้รู้สึกยังไงบ้าง?</h3>
+        <div class="grid grid-cols-4 gap-2">
+          <button onclick="handleMood('happy')" class="flex flex-col items-center gap-1 hover:-translate-y-1 transition">
+            <span class="text-3xl bg-yellow-100 p-2 rounded-full">😆</span>
+            <span class="text-xs text-gray-500">แฮปปี้</span>
+          </button>
+          <button onclick="handleMood('tired')" class="flex flex-col items-center gap-1 hover:-translate-y-1 transition">
+            <span class="text-3xl bg-blue-100 p-2 rounded-full">😴</span>
+            <span class="text-xs text-gray-500">เหนื่อย</span>
+          </button>
+          <button onclick="handleMood('sad')" class="flex flex-col items-center gap-1 hover:-translate-y-1 transition">
+            <span class="text-3xl bg-indigo-100 p-2 rounded-full">🥺</span>
+            <span class="text-xs text-gray-500">เศร้า</span>
+          </button>
+          <button onclick="handleMood('stressed')" class="flex flex-col items-center gap-1 hover:-translate-y-1 transition">
+            <span class="text-3xl bg-red-100 p-2 rounded-full">🤯</span>
+            <span class="text-xs text-gray-500">เครียด</span>
           </button>
         </div>
-      </div>
-    </div>
+        <div id="mood-response" class="hidden mt-4 text-center text-sm text-gray-600 bg-white/80 p-3 rounded-xl border border-pink-100 shadow-inner"></div>
+      </section>
 
-    <!-- Love Modal -->
-    <div
-      id="loveModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[9999] hidden p-4 transition-opacity duration-300 opacity-0"
-    >
-      <div
-        class="bg-white rounded-2xl p-8 max-w-sm w-full text-center transform transition-transform duration-300 shadow-2xl border-4 border-pink-100 scale-0"
-        id="loveModalContent"
-      >
-        <div class="text-6xl mb-4 animate-bounce">💖</div>
-        <h3 class="text-2xl font-bold text-hot-pink mb-2">รักนะต้าวอ้วน!</h3>
-        <p class="text-gray-600 mb-6">
-          ขอบคุณที่เป็นรอยยิ้มให้กันในทุกๆ วันนะ<br />อยู่ด้วยกันไปนานๆ นะครับ
-        </p>
-        <button
-          onclick="closeLoveModal()"
-          class="bg-gray-100 text-gray-600 px-6 py-2 rounded-full hover:bg-hot-pink hover:text-white transition text-sm"
-        >
-          เขินจัง ปิดละ
+      <!-- 3. BREATHING BUDDY -->
+      <section class="bg-gradient-to-br from-blue-50 to-pink-50 rounded-2xl p-6 shadow-md text-center relative overflow-hidden">
+        <h3 class="text-pink-400 font-bold mb-6 relative z-10">หายใจเข้าลึกๆ นะ...</h3>
+        <div class="relative h-32 flex justify-center items-center z-10">
+          <div class="breathing-circle w-24 h-24 bg-gradient-to-r from-blue-200 to-pink-200 rounded-full opacity-80 blur-sm absolute"></div>
+          <div class="breathing-circle-inner w-20 h-20 bg-white rounded-full flex justify-center items-center shadow-sm text-2xl relative">
+            💨
+          </div>
+        </div>
+        <p class="text-xs text-gray-400 mt-4 relative z-10">หายใจเข้า... หายใจออก...</p>
+      </section>
+
+      <!-- 4. MINI MUSIC PLAYER -->
+      <div class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white/90 backdrop-blur-md rounded-full p-2 shadow-2xl border border-pink-200 flex items-center gap-3 z-50">
+        <div class="w-10 h-10 rounded-full bg-pink-100 overflow-hidden relative flex-shrink-0 cursor-pointer" onclick="toggleMusic()">
+           <img id="music-cover" src="https://api.dicebear.com/9.x/avataaars/svg?seed=Love&backgroundColor=ffdfbf" class="w-full h-full object-cover" />
+           <div class="absolute inset-0 flex justify-center items-center bg-black/10">
+             <i class="fas fa-music text-white text-xs" id="music-icon"></i>
+           </div>
+        </div>
+        <div class="flex-1">
+          <p class="text-xs font-bold text-gray-600 truncate">Wake Up Please.mp3</p>
+          <input type="range" id="volume-slider" min="0" max="100" value="50" class="w-full h-1 bg-pink-200 rounded-lg appearance-none cursor-pointer accent-hot-pink">
+        </div>
+        <button onclick="toggleMute()" class="w-8 h-8 flex justify-center items-center text-pink-400 hover:bg-pink-50 rounded-full transition">
+          <i class="fas fa-volume-up text-sm" id="volume-icon"></i>
         </button>
       </div>
-    </div>
 
-    <!-- Lightbox Modal -->
-    <div
-      id="lightbox"
-      class="fixed inset-0 bg-black/90 z-[10000] hidden flex justify-center items-center cursor-pointer"
-      onclick="closeLightbox()"
-    >
-      <img
-        id="lightbox-img"
-        src=""
-        class="max-w-[90%] max-h-[90vh] rounded-lg shadow-2xl border-4 border-white transform scale-90 transition-transform duration-300"
-      />
+      <!-- Footer -->
+      <footer class="text-center py-8 text-xs text-pink-300">
+        Made with <i class="fas fa-heart text-red-400 animate-pulse"></i> for You
+      </footer>
+
     </div>
 
     <!-- Audio Element -->
     <audio id="bgMusic" loop>
       <source src="Wake Up Please.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
     </audio>
 
-    <!-- เชื่อมต่อไฟล์ Script ของเรา -->
+    <!-- Script -->
     <script src="script.js"></script>
   </body>
 </html>
